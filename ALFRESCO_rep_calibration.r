@@ -74,10 +74,14 @@ t3 <- mcf(f, iters=nreps, clusters=cpu.count)
 
 # names of the needed output files
 table_names = c("boreal.aab","boreal.size.fire","boreal.num.fire","tundra.aab","tundra.size.fire","tundra.num.fire")
-
+# table_names = c(boreal.aab,boreal.size.fire,boreal.num.fire,tundra.aab,tundra.size.fire,tundra.num.fire)
 #create the needed output tables from the nested list object created above
-for(i in 1:6){
-	assign(table_names[i], matrix(unlist(lapply(t3,'[[',i)), nrow=length(years)))
+for(i in 1:length(table_names)){
+	assign(as.character(table_names[i]), matrix(unlist(lapply(t3,'[[',i)), nrow=length(years)))
+	if(any(is.na(table_names[i])) == TRUE){
+		print("TRUE!")
+		table_names[i][which(is.na(table_names[i]) == TRUE)] <- 0
+	}
 }
 
 #lets remove some of the objects in memory
