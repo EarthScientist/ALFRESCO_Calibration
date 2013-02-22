@@ -48,22 +48,25 @@ f <- function(nreps){
 	tun.tab <- numeric()
 	tun.size <- numeric()
 	tun.num <- numeric()
+	boreal.tundra.v <- getValues(boreal.tundra)
 	for(nrep in nreps){
 		for(year in years){
 			r <- raster(paste(dataPath,"Age_",nrep,"_",year,".tif",sep=""))
 			r[which(values(r) != 0)] <- NA
 			r[which(values(r) == 0)] <- 1
-			#boreal
+			#create contiguous patches
 			r.clump <- clump(r,gaps=FALSE) #[which(values(boreal.tundra)==1),drop=F]
-			boreal.patch <- freq(r.clump[values(boreal.tundra == 1), drop=F], useNA='no')
-			bor.tab <- append(bor.tab, sum(boreal.patch[,2]))
-			bor.size <- append(bor.size, mean(boreal.patch[,2]))
-			bor.num <- append(bor.num, nrow(boreal.patch))
+			r.clump.v <- getValues(r.clump)
+			#boreal
+			boreal.patch <- as.numeric(table(r.clump.v[which(boreal.tundra.v == 1)], useNA='no'))
+			bor.tab <- append(bor.tab, sum(boreal.patch))
+			bor.size <- append(bor.size, mean(boreal.patch))
+			bor.num <- append(bor.num, length(boreal.patch))
 			#tundra
-			tundra.patch <- freq(r.clump[values(boreal.tundra == 2), drop=F], useNA='no')
-			tun.tab <- append(tun.tab, sum(tundra.patch[,2]))
-			tun.size <- append(tun.size, mean(tundra.patch[,2]))
-			tun.num <- append(tun.num, nrow(tundra.patch))
+			tundra.patch <- table(r.clump.v[which(boreal.tundra.v == 2)], useNA='no')
+			tun.tab <- append(tun.tab, sum(tundra.patch))
+			tun.size <- append(tun.size, mean(tundra.patch))
+			tun.num <- append(tun.num, length(tundra.patch))
 		}
 	}
 	out <- list(bor.tab, bor.size, bor.num, tun.tab, tun.size, tun.num)
@@ -74,7 +77,7 @@ t3 <- mcf(f, iters=nreps, clusters=cpu.count)
 
 # names of the needed output files
 table_names = c("boreal.aab","boreal.size.fire","boreal.num.fire","tundra.aab","tundra.size.fire","tundra.num.fire")
-# table_names = c(boreal.aab,boreal.size.fire,boreal.num.fire,tundra.aab,tundra.size.fire,tundra.num.fire)
+#table_names = c(boreal.aab,boreal.size.fire,boreal.num.fire,tundra.aab,tundra.size.fire,tundra.num.fire)
 #create the needed output tables from the nested list object created above
 for(i in 1:length(table_names)){
 	assign(as.character(table_names[i]), matrix(unlist(lapply(t3,'[[',i)), nrow=length(years)))
