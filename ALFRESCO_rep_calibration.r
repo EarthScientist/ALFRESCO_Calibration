@@ -24,7 +24,7 @@ if(extension(maskFile) == ".shp"){
 	# create the needed mask file using a template file from the data to be processed
 	template <- raster(paste(mapsPath, "Age_",nreps[1],"_",years[1],".tif",sep="")) # "/workspace/Shared/ALFRESCO_Jacob_Bird/NEW_CaribouSubregionResults/CalibrationResults_Maps1950to2009/Maps/Age_0_1950.tif"
 	# read in the mask shapefile
-	shp <- shapefile("/workspace/UA/malindgren/projects/ALFRESCO/Calibration_Script/masks/Boreal_Tundra_CombinedDomains.shp")
+	shp <- shapefile(maskFile)
 	#mask
 	boreal.tundra <- rasterize(shp,template, field="Id")		
 }else{
