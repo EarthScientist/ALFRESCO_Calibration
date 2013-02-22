@@ -22,7 +22,7 @@ dataPath=mapsPath
 
 if(extension(maskFile) == ".shp"){
 	# create the needed mask file using a template file from the data to be processed
-	template <- raster(paste(mapsPath, "Age_",nreps[1],"_",years[1],".tif",sep="")) # "/workspace/Shared/ALFRESCO_Jacob_Bird/NEW_CaribouSubregionResults/CalibrationResults_Maps1950to2009/Maps/Age_0_1950.tif"
+	template <- raster(paste(mapsPath, "Age_",nreps[1],"_",years[1],".tif",sep="")) 
 	# read in the mask shapefile
 	shp <- shapefile(maskFile)
 	#mask
@@ -35,7 +35,7 @@ if(extension(maskFile) == ".shp"){
 rm(template,shp)
 
 # source in matts parallel setup function
-source(mcfPath)#"/workspace/UA/malindgren/projects/ALFRESCO/Calibration_Script/code_copy/multicore_function_parallel.r"
+source(mcfPath)
 
 # how many cores to use?
 cpu.count <- detectCores()
