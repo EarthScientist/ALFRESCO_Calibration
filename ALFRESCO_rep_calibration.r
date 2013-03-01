@@ -63,7 +63,7 @@ f <- function(nreps){
 			bor.size <- append(bor.size, mean(boreal.patch))
 			bor.num <- append(bor.num, length(boreal.patch))
 			#tundra
-			tundra.patch <- table(r.clump.v[which(boreal.tundra.v == 2)], useNA='no')
+			tundra.patch <- as.numeric(table(r.clump.v[which(boreal.tundra.v == 2)], useNA='no'))
 			tun.tab <- append(tun.tab, sum(tundra.patch))
 			tun.size <- append(tun.size, mean(tundra.patch))
 			tun.num <- append(tun.num, length(tundra.patch))
@@ -82,7 +82,6 @@ table_names = c("boreal.aab","boreal.size.fire","boreal.num.fire","tundra.aab","
 for(i in 1:length(table_names)){
 	assign(as.character(table_names[i]), matrix(unlist(lapply(t3,'[[',i)), nrow=length(years)))
 	if(any(is.na(table_names[i])) == TRUE){
-		print("TRUE!")
 		table_names[i][which(is.na(table_names[i]) == TRUE)] <- 0
 	}
 }
