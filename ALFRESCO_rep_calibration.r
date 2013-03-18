@@ -69,6 +69,9 @@ f <- function(nreps){
 			tundra.patch <- table(r.clump.v[which(boreal.tundra.v == 2)], useNA='no')
 			tun.tab <- append(tun.tab, sum(tundra.patch))
 			tun.size.mean <- append(tun.size.mean, mean(tundra.patch))
+			# do something with the distriution of the data for the purpose of getting at this issue
+			# there are not EP ways of geting this thing up and rinning
+			
 			tun.num <- append(tun.num, length(tundra.patch))
 			# added values for all fire sizes
 			bor.size.all <- append(bor.size, boreal.patch[,2])
